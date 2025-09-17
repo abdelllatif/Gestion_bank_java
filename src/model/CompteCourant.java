@@ -27,11 +27,25 @@ public class CompteCourant extends Compte {
     }
 
     public void virement(double montant, Compte compte){
-        if(montant <= this.solde + this.decouvert){
-            compte.addSolde(montant);
-            this.solde -= montant;
+            if(montant<=this.solde) {
+                this.solde -= montant;
+                compte.addSolde(montant);
+                System.out.println("Montant retirer avec succes ur solde now is" + this.solde);
+            }
+            else if(montant>this.solde){
+                if(montant<=this.solde+this.decouvert){
+                    this.solde =0;
+                    this.decouvert =Math.abs(this.solde-montant);
+                    compte.addSolde(montant);
+                    System.out.println("Montant retirer avec succes ur solde now is" + this.solde);
+                }
+                else{
+                    System.out.println("Montant not enoght");
+                }
+            }
         }
-    }
+
+
     @Override
     public double calculerInteret(){
         return 0;

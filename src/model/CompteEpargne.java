@@ -24,8 +24,17 @@ public class CompteEpargne extends Compte {
     }
 
     public void addSolde(double montant){
-
+        this.solde += montant;
     }
+    public void virement(double montant, Compte compte){
+        if(montant<=this.solde){
+            this.solde -= montant;
+            compte.addSolde(montant);
+            System.out.println("Montant retirer avec succes ur solde now is" + this.solde);
+        }else{
+            System.out.println("Montant not enoght");
+        }
+    };
     @Override
     public double calculerInteret(){
         return this.solde * (this.tauxInteret / 100);

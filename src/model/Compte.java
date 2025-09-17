@@ -53,7 +53,9 @@ public class Compte {
     public void addSolde(double montant){}
     public void retrait(double montant){}
     public double calculerInteret(){ return 0;}
-    public static void VirementToCompte(double montant, Compte compte){};
+
+
+    public void virement(double montant, Compte compte){};
     @Override
     public String toString() {
         return "Compte [numero=" + numeroCompte + ", solde=" + solde + ", nom=" + nom + ", prenom=" + prenom + ", date=" + dateCreation + "]";

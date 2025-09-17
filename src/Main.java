@@ -15,8 +15,9 @@ public class Main {
             System.out.println("2.  Retrait money");
             System.out.println("3.  Effectuer un virement");
             System.out.println("4.  Voir interet d'un compte");
-            System.out.println("5.  Check account balance");
-            System.out.println("6.  View account operations");
+            System.out.println("5.  View account details");
+            System.out.println("6.  View all accounts");
+            System.out.println("7.  View account operations");
             System.out.println("0.  Exit");
             System.out.println("----------------------------------------");
             System.out.print(" Please enter your choice: ");
@@ -35,19 +36,19 @@ public class Main {
                     CompteController.choix();
                     break;
                 case 2:
-                    System.out.println("Money deposited successfully");
+                    CompteController.retrait();
                     break;
                 case 3:
-                    CompteController.
+                    CompteController.virement();
                     break;
                 case 4:
                     CompteController.calculerInteret();
                     break;
                 case 5:
-                    System.out.println("Account balance checked successfully");
+                    CompteController.afficherDetail();
                     break;
                 case 6:
-                    System.out.println("Account operations viewed successfully");
+                    CompteController.afficherComptes();
                     break;
                 case 0:
                     System.out.println("Thank you for using our service");

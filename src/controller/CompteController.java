@@ -18,8 +18,6 @@ public class CompteController {
             System.out.println("||=========================================||");
             System.out.println("1.  Add a new Compte Courant");
             System.out.println("2.  Add a new Compte Epargne");
-            System.out.println("3.  Show all accounts");
-            System.out.println("4.  Show account details");
             System.out.println("0.  Exit");
             System.out.println("----------------------------------------");
             System.out.print(" Please enter your choice: ");
@@ -37,12 +35,6 @@ public class CompteController {
                     break;
                 case 2:
                     AddCompteEpargne();
-                    break;
-                case 3:
-                    afficherComptes();
-                    break;
-                case 4:
-                    afficherDetail();
                     break;
                 case 0:
                     choix = 0;
@@ -203,7 +195,7 @@ public class CompteController {
         }
     }
 
-    public void retrait(){
+    public static void retrait(){
         System.out.println("||=========================================||");
         System.out.println("||          Retrait Account Amount       ||");
         System.out.println("||=========================================||");
@@ -220,10 +212,50 @@ public class CompteController {
         if(compte instanceof CompteCourant){
             CompteCourant cc = (CompteCourant) compte;
             cc.retrait(montant);
+            System.out.println("Montant retirer avec succes ur solde now is" + cc.getsolde());
         }
         else if(compte instanceof CompteEpargne){
             CompteEpargne ce = (CompteEpargne) compte;
             ce.retrait(montant);
+            System.out.println("Montant retirer avec succes ur solde now is" + ce.getsolde());
+        }
+    }
+
+
+    public static void virement(){
+        System.out.println("||=========================================||");
+        System.out.println("||          Virement Account Amount       ||");
+        System.out.println("||=========================================||");
+        System.out.println("Enter the account number: ");
+        String numeroCompte = input.nextLine();
+        if (numeroCompte.isEmpty()) {
+            System.out.println("Account number 1 is empty.");
+            return;
+        }
+        System.out.println("Enter the amount to withdraw: ");
+        double montant = input.nextDouble();
+        if (montant <= 0) {
+            System.out.println("Montant must be positive");
+            return;
+        }
+        System.out.println("Enter the account number to transfer: ");
+        String numeroCompte2 = input.nextLine();
+        input.nextLine();
+        if (numeroCompte2.isEmpty()) {
+            System.out.println("Account number 2 is empty.");
+            return;
+        }
+
+        HashMap<String, Compte> comptes = Compte.getComptes();
+        Compte compte = comptes.get(numeroCompte);
+        Compte compte2 = comptes.get(numeroCompte2);
+        if(compte instanceof CompteCourant){
+            CompteCourant cc = (CompteCourant) compte;
+            cc.virement(montant, compte2);
+        }
+        else if(compte instanceof CompteEpargne){
+            CompteEpargne ce = (CompteEpargne) compte;
+            ce.virement(montant, compte2);
         }
     }
 }
