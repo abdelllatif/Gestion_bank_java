@@ -222,7 +222,7 @@ public class CompteController {
     }
 
 
-    public static void virement(){
+    public static void virement() {
         System.out.println("||=========================================||");
         System.out.println("||          Virement Account Amount       ||");
         System.out.println("||=========================================||");
@@ -238,9 +238,10 @@ public class CompteController {
             System.out.println("Montant must be positive");
             return;
         }
+        input.nextLine();
+
         System.out.println("Enter the account number to transfer: ");
         String numeroCompte2 = input.nextLine();
-        input.nextLine();
         if (numeroCompte2.isEmpty()) {
             System.out.println("Account number 2 is empty.");
             return;
@@ -249,13 +250,36 @@ public class CompteController {
         HashMap<String, Compte> comptes = Compte.getComptes();
         Compte compte = comptes.get(numeroCompte);
         Compte compte2 = comptes.get(numeroCompte2);
-        if(compte instanceof CompteCourant){
+        if (compte instanceof CompteCourant) {
             CompteCourant cc = (CompteCourant) compte;
             cc.virement(montant, compte2);
-        }
-        else if(compte instanceof CompteEpargne){
+        } else if (compte instanceof CompteEpargne) {
             CompteEpargne ce = (CompteEpargne) compte;
             ce.virement(montant, compte2);
         }
     }
+
+    public static void getSolde(){
+        System.out.println("||=========================================||");
+        System.out.println("||           Account Balance          ||");
+        System.out.println("||=========================================||");
+        System.out.println("Enter the account number: ");
+        String numeroCompte = input.nextLine();
+        HashMap<String, Compte> comptes = Compte.getComptes();
+        Compte compte = comptes.get(numeroCompte);
+        if (compte == null) {
+            System.out.println("Account not found.");
+        }
+
+        if(compte instanceof CompteCourant){
+            CompteCourant cc = (CompteCourant) compte;
+            System.out.println("Solde de votre compte courant est de " + cc.getsolde() + " avec decouvert de " + cc.getDecouvert());
+        }
+        else if(compte instanceof CompteEpargne){
+            CompteEpargne ce = (CompteEpargne) compte;
+            System.out.println("Solde de votre compte epargne est de " + ce.getsolde());
+        }
+        System.out.println("||=========================================||");
+    }
+
 }
