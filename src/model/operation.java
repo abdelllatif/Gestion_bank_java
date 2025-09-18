@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class operation {
+ public abstract class operation {
     protected static int numberOfOperation =0;
     protected double montant;
     protected String dateOperation;

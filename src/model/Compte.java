@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class Compte {
+public abstract class Compte {
     private static int number = 11111;
     protected String numeroCompte;
     protected double solde;

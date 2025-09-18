@@ -38,7 +38,20 @@ public class CompteEpargne extends Compte {
         }
     }
 
-
+      new Thread(() -> {
+        while (running) {
+            try {
+                Thread.sleep(30000);
+                double interet = calculerInteret();
+                this.solde += interet;
+                System.out.println("Interest added: " + interet + " | New solde = " + this.solde);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                running = false;
+            }
+        }
+    }).start();
+}
 
     @Override
     public double calculerInteret() {
