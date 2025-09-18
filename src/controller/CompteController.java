@@ -1,9 +1,9 @@
 package controller;
-import model.Compte;
-import model.CompteCourant;
-import model.CompteEpargne;
+
+import model.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class CompteController {
@@ -14,7 +14,7 @@ public class CompteController {
         int choix = -1;
         while (choix != 0) {
             System.out.println("||=========================================||");
-            System.out.println("||            Choose an option            ||");
+            System.out.println("||            Choose an option             ||");
             System.out.println("||=========================================||");
             System.out.println("1.  Add a new Compte Courant");
             System.out.println("2.  Add a new Compte Epargne");
@@ -174,7 +174,7 @@ public class CompteController {
         System.out.println("||=========================================||");
     }
 
-    public static void  calculerInteret(){
+    public static void calculerInteret() {
         System.out.println("||=========================================||");
         System.out.println("||          Descover Account Interet       ||");
         System.out.println("||=========================================||");
@@ -189,13 +189,12 @@ public class CompteController {
         if (compte instanceof CompteEpargne) {
             CompteEpargne cc = (CompteEpargne) compte;
             System.out.println("Vous aver un interet de " + cc.calculerInteret());
-        }
-        else if (compte instanceof CompteCourant) {
+        } else if (compte instanceof CompteCourant) {
             System.out.println("Vous aver un interet de 0");
         }
     }
 
-    public static void retrait(){
+    public static void retrait() {
         System.out.println("||=========================================||");
         System.out.println("||          Retrait Account Amount       ||");
         System.out.println("||=========================================||");
@@ -203,20 +202,25 @@ public class CompteController {
         String numeroCompte = input.nextLine();
         System.out.println("Enter the amount to withdraw: ");
         double montant = input.nextDouble();
+        System.out.println("Entrer the destination: ");
+        String distination = input.nextLine();
         HashMap<String, Compte> comptes = Compte.getComptes();
         Compte compte = comptes.get(numeroCompte);
         if (compte == null) {
             System.out.println("Account not found.");
             return;
         }
-        if(compte instanceof CompteCourant){
+        if (compte instanceof CompteCourant) {
             CompteCourant cc = (CompteCourant) compte;
             cc.retrait(montant);
+            Retrait retrait = new Retrait(montant, distination);
+            cc.addOperation(cc.getnumeroCompte(), retrait);
             System.out.println("Montant retirer avec succes ur solde now is" + cc.getsolde());
-        }
-        else if(compte instanceof CompteEpargne){
+        } else if (compte instanceof CompteEpargne) {
             CompteEpargne ce = (CompteEpargne) compte;
             ce.retrait(montant);
+            Retrait retrait = new Retrait(montant, distination);
+            ce.addOperation(ce.getnumeroCompte(), retrait);
             System.out.println("Montant retirer avec succes ur solde now is" + ce.getsolde());
         }
     }
@@ -253,13 +257,58 @@ public class CompteController {
         if (compte instanceof CompteCourant) {
             CompteCourant cc = (CompteCourant) compte;
             cc.virement(montant, compte2);
+            String destination1 = "Transfert";
+            String destination2 = cc.getnom() + " " + cc.getPrenom();
+            Retrait retrait = new Retrait(montant, destination2);
+            Versement versement = new Versement(montant, destination2);
+            cc.addOperation(cc.getnumeroCompte(), retrait);
+            cc.addOperation(compte2.getnumeroCompte(), versement);
         } else if (compte instanceof CompteEpargne) {
             CompteEpargne ce = (CompteEpargne) compte;
             ce.virement(montant, compte2);
+            String destination1 = "Transfert";
+            String destination2 = ce.getnom() + " " + ce.getPrenom();
+            Retrait retrait = new Retrait(montant, destination1);
+            Versement versement = new Versement(montant, destination2);
+            ce.addOperation(ce.getnumeroCompte(), retrait);
+            ce.addOperation(compte2.getnumeroCompte(), versement);
         }
     }
 
-    public static void getSolde(){
+    public static void addSold() {
+        System.out.println("||=========================================||");
+        System.out.println("||          Augmenter Account balance       ||");
+        System.out.println("||=========================================||");
+        System.out.println("Enter the account number: ");
+        String numeroCompte = input.nextLine();
+        System.out.println("Enter the amount to add: ");
+        double montant = input.nextDouble();
+        System.out.println("Entrer la source: ");
+        String source = input.nextLine();
+        HashMap<String, Compte> comptes = Compte.getComptes();
+        Compte compte = comptes.get(numeroCompte);
+        if (compte == null) {
+            System.out.println("Account not found.");
+            return;
+        }
+
+        if (compte instanceof CompteCourant) {
+            CompteCourant cc = (CompteCourant) compte;
+            cc.addSolde(cc.getsolde() + montant);
+            Versement versement = new Versement(montant, source);
+            cc.addOperation(cc.getnumeroCompte(), versement);
+            System.out.println("Montant Ajouter avec succes ur solde now is" + cc.getsolde());
+        } else if (compte instanceof CompteEpargne) {
+            CompteEpargne ce = (CompteEpargne) compte;
+            ce.retrait(montant);
+            Versement versement = new Versement(montant, source);
+            ce.addOperation(ce.getnumeroCompte(), versement);
+            System.out.println("Montant Ajouter avec succes ur solde now is" + ce.getsolde());
+        }
+        System.out.println("||=========================================||");
+    }
+
+    public static void getSolde() {
         System.out.println("||=========================================||");
         System.out.println("||           Account Balance          ||");
         System.out.println("||=========================================||");
@@ -271,15 +320,55 @@ public class CompteController {
             System.out.println("Account not found.");
         }
 
-        if(compte instanceof CompteCourant){
+        if (compte instanceof CompteCourant) {
             CompteCourant cc = (CompteCourant) compte;
             System.out.println("Solde de votre compte courant est de " + cc.getsolde() + " avec decouvert de " + cc.getDecouvert());
-        }
-        else if(compte instanceof CompteEpargne){
+        } else if (compte instanceof CompteEpargne) {
             CompteEpargne ce = (CompteEpargne) compte;
             System.out.println("Solde de votre compte epargne est de " + ce.getsolde());
         }
         System.out.println("||=========================================||");
     }
+
+
+    public static void afficherOperationOfAccount() {
+        System.out.println("Enter the account number: ");
+        String numeroCompte = input.nextLine();
+
+        HashMap<String, Compte> comptes = Compte.getComptes();
+        Compte compte = comptes.get(numeroCompte);
+
+        if (compte == null) {
+            System.out.println("Compte introuvable !");
+            return;
+        }
+
+        HashMap<String, List<operation>> operations = Compte.getOperations();
+        List<operation> ops = operations.get(numeroCompte);
+
+        if (ops == null || ops.isEmpty()) {
+            System.out.println("Aucune opération trouvée pour ce compte.");
+            return;
+        }
+
+        System.out.println("||=========================================||");
+        System.out.println("||           Account Operations            ||");
+        System.out.println("||=========================================||");
+        System.out.println("Account number: " + numeroCompte);
+        System.out.println("Account name: " + compte.getnom() + " " + compte.getPrenom());
+        System.out.println("||=========================================||");
+        System.out.println("Operations:");
+
+        for (operation op : ops) {
+            if (op instanceof Retrait) {
+                Retrait rt = (Retrait) op;
+                System.out.println("Retrait de " + op.getMontant() + " vers " + rt.getDestination() + " le " + op.getDateOperation());
+            } else if (op instanceof Versement) {
+                Versement vs = (Versement) op;
+                System.out.println("Versement de " + op.getMontant() + " depuis " + vs.getSource() + " le " + op.getDateOperation());
+            }
+        }
+    }
+
 
 }
