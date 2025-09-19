@@ -35,8 +35,9 @@ public class CompteCourant extends Compte {
             System.out.println("Montant retirer avec succes ur solde now is" + this.solde);
         } else if (montant > this.solde) {
             if (montant <= this.solde + this.decouvert) {
+
+                this.decouvert = Math.abs((this.decouvert) - (this.solde - montant));
                 this.solde = 0;
-                this.decouvert = Math.abs(this.solde - montant);
                 compte.addSolde(montant);
                 System.out.println("Montant retirer avec succes ur solde now is" + this.solde);
             } else {
