@@ -2,7 +2,7 @@ package model;
 
 public class CompteEpargne extends Compte {
     private double tauxInteret;
-
+    private Boolean running = true;
     public CompteEpargne(int numeroCompte, double solde, String nom, String prenom, String numero, String dateCreation, double tauxInteret) {
         super(numeroCompte, solde, nom, prenom, numero, dateCreation);
         this.tauxInteret = tauxInteret;
@@ -38,24 +38,14 @@ public class CompteEpargne extends Compte {
         }
     }
 
-      new Thread(() -> {
-        while (running) {
-            try {
-                Thread.sleep(30000);
-                double interet = calculerInteret();
-                this.solde += interet;
-                System.out.println("Interest added: " + interet + " | New solde = " + this.solde);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                running = false;
-            }
-        }
-    }).start();
-}
+
+
 
     @Override
     public double calculerInteret() {
-        return this.solde * (this.tauxInteret / 100);
+
+        this.solde+= this.solde * (this.tauxInteret / 100);
+        return this.solde;
     }
 
     @Override
