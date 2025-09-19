@@ -215,7 +215,12 @@ public class CompteController {
         }
         if (compte instanceof CompteCourant) {
             CompteCourant cc = (CompteCourant) compte;
-            cc.retrait(montant);
+            if (cc.getsolde() < montant) {
+                if(montant<=cc.getsolde()+cc.getDecouvert()){
+                    cc.retrait(montant);
+                }
+            }
+
             Retrait retrait = new Retrait(montant, distination);
             cc.addOperation(cc.getnumeroCompte(), retrait);
             System.out.println("Montant retirer avec succes ur solde now is" + cc.getsolde());

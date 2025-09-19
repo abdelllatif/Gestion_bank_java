@@ -18,7 +18,13 @@ public class CompteCourant extends Compte {
 
     public void retrait(double montant) {
         if (montant <= this.solde + this.decouvert) {
-            this.solde -= montant;
+            if(montant<=this.solde){
+                this.solde -= montant;
+            } else if (montant>this.solde) {
+                this.decouvert -= (montant - this.solde);
+                this.solde = 0;
+            }
+
         } else {
             System.out.println("Montant not enoght");
         }
@@ -36,7 +42,7 @@ public class CompteCourant extends Compte {
         } else if (montant > this.solde) {
             if (montant <= this.solde + this.decouvert) {
 
-                this.decouvert = Math.abs((this.decouvert) - (this.solde - montant));
+                this.decouvert -= (montant - this.solde);
                 this.solde = 0;
                 compte.addSolde(montant);
                 System.out.println("Montant retirer avec succes ur solde now is" + this.solde);
