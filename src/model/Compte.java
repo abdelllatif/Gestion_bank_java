@@ -65,6 +65,17 @@ public abstract class Compte {
 
     public void addSolde(double montant) {
     }
+    public void setSolde(double solde) {
+        this.solde = solde;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
 
     public void retrait(double montant) {
     }

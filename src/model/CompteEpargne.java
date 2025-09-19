@@ -11,6 +11,9 @@ public class CompteEpargne extends Compte {
     public double getTauxInteret() {
         return tauxInteret;
     }
+    public void setTauxInteret(double tauxInteret) {
+        this.tauxInteret = tauxInteret;
+    }
 
     public void retrait(double montant) {
         if (montant <= 0) {

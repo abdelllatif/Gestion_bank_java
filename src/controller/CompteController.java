@@ -5,6 +5,7 @@ import model.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import service.calculeTauxTask;
 
 public class CompteController {
 
@@ -93,6 +94,8 @@ public class CompteController {
         try {
             CompteEpargne compteEpargne = new CompteEpargne(0, solde, nom, prenom, "", "", tauxInteret);
             compteEpargne.addCompte(compteEpargne.getnumeroCompte(), compteEpargne);
+// Start the scheduled task
+            new calculeTauxTask().start(compteEpargne);
             System.out.println("||=========================================||");
             System.out.println("Account created successfully");
             System.out.println("Account number: " + compteEpargne.getnumeroCompte());
