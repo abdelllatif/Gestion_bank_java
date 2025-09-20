@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="heelo_prog:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/heelo_prog_jar</output-path>
+    <root id="archive" name="heelo_prog.jar">
+      <element id="module-output" name="heelo_prog" />
+    </root>
+  </artifact>
+</component>
