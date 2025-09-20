@@ -5,9 +5,8 @@ public class CompteCourant extends Compte {
 
     public CompteCourant(int numeroCompte, double solde, String nom, String prenom, String numero, String dateCreation, double decouvert) {
         super(numeroCompte, solde, nom, prenom, numero, dateCreation);
-        if (decouvert < 0) {
-            throw new IllegalArgumentException("Découvert cannot be negative");
-        }
+        if (solde < 0) throw new IllegalArgumentException("Le solde ne peut pas être négatif");
+        if (decouvert < 0) throw new IllegalArgumentException("Le découvert ne peut pas être négatif");
         this.decouvert = decouvert;
     }
 
@@ -16,77 +15,36 @@ public class CompteCourant extends Compte {
     }
 
     public void setDecouvert(double decouvert) {
-        if (decouvert < 0) {
-            throw new IllegalArgumentException("Découvert cannot be negative");
-        }
+        if (decouvert < 0) throw new IllegalArgumentException("Le découvert ne peut pas être négatif");
         this.decouvert = decouvert;
     }
 
     public void retrait(double montant) {
-        try {
-            if (montant <= 0) {
-                throw new IllegalArgumentException("Montant must be positive");
-            }
-
-            if (montant <= this.solde + this.decouvert) {
-                if (montant <= this.solde) {
-                    this.solde -= montant;
-                } else {
-                    this.decouvert -= (montant - this.solde);
-                    this.solde = 0;
-                }
-                System.out.println("Retrait effectué, solde actuel: " + this.solde + ", découvert restant: " + this.decouvert);
-            } else {
-                throw new IllegalStateException("Montant insuffisant pour le retrait");
-            }
-
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            System.out.println("Erreur retrait: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erreur inattendue: " + e.getMessage());
+        if (montant <= 0) throw new IllegalArgumentException("Le montant doit être positif");
+        if (montant > this.solde + this.decouvert) throw new IllegalStateException("Solde insuffisant pour le retrait");
+        if (montant <= this.solde) {
+            this.solde -= montant;
+        } else {
+            this.decouvert -= (montant - this.solde);
+            this.solde = 0;
         }
     }
 
     public void addSolde(double montant) {
-        try {
-            if (montant <= 0) {
-                throw new IllegalArgumentException("Montant must be positive");
-            }
-            this.solde += montant;
-            System.out.println("Montant ajouté avec succès, solde actuel: " + this.solde);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erreur ajout solde: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erreur inattendue: " + e.getMessage());
-        }
+        if (montant <= 0) throw new IllegalArgumentException("Le montant doit être positif");
+        this.solde += montant;
     }
 
     public void virement(double montant, Compte compte) {
-        try {
-            if (compte == null) {
-                throw new NullPointerException("Compte cible est null");
-            }
-            if (montant <= 0) {
-                throw new IllegalArgumentException("Montant must be positive");
-            }
-
-            if (montant <= this.solde) {
-                this.solde -= montant;
-            } else if (montant <= this.solde + this.decouvert) {
-                this.decouvert -= (montant - this.solde);
-                this.solde = 0;
-            } else {
-                throw new IllegalStateException("Montant insuffisant pour le virement");
-            }
-
-            compte.addSolde(montant);
-            System.out.println("Virement effectué, solde actuel: " + this.solde + ", découvert restant: " + this.decouvert);
-
-        } catch (NullPointerException | IllegalArgumentException | IllegalStateException e) {
-            System.out.println("Erreur virement: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erreur inattendue: " + e.getMessage());
+        if (montant <= 0) throw new IllegalArgumentException("Le montant doit être positif");
+        if (montant > this.solde + this.decouvert) throw new IllegalStateException("Solde insuffisant pour le virement");
+        if (montant <= this.solde) {
+            this.solde -= montant;
+        } else {
+            this.decouvert -= (montant - this.solde);
+            this.solde = 0;
         }
+        compte.addSolde(montant);
     }
 
     @Override

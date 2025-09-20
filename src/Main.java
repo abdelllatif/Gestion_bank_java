@@ -1,5 +1,4 @@
 import controller.CompteController;
-
 import java.util.Scanner;
 
 public class Main {
@@ -9,25 +8,25 @@ public class Main {
         Scanner input = new Scanner(System.in);
         while (choix != 0) {
             System.out.println("||=========================================||");
-            System.out.println("||          BANK MANAGEMENT SYSTEM         ||");
+            System.out.println("||       SYSTÈME DE GESTION BANCAIRE       ||");
             System.out.println("||=========================================||");
-            System.out.println("1.  Create a new account");
-            System.out.println("2.  Retrait money");
-            System.out.println("3.  Add money");
+            System.out.println("1.  Créer un nouveau compte");
+            System.out.println("2.  Retirer de l'argent");
+            System.out.println("3.  Déposer de l'argent");
             System.out.println("4.  Effectuer un virement");
-            System.out.println("5.  Voir interet d'un compte");
-            System.out.println("6.  View account details");
-            System.out.println("7.  View all accounts");
-            System.out.println("8.  View account operations");
-            System.out.println("0.  Exit");
+            System.out.println("5.  Voir l'intérêt d'un compte");
+            System.out.println("6.  Consulter les détails d'un compte");
+            System.out.println("7.  Voir tous les comptes");
+            System.out.println("8.  Consulter les opérations d'un compte");
+            System.out.println("0.  Quitter");
             System.out.println("----------------------------------------");
-            System.out.print(" Please enter your choice: ");
+            System.out.print("Veuillez entrer votre choix : ");
 
             if (input.hasNextInt()) {
                 choix = input.nextInt();
                 input.nextLine();
             } else {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println("Entrée invalide. Veuillez entrer un nombre.");
                 input.nextLine();
                 continue;
             }
@@ -42,7 +41,6 @@ public class Main {
                 case 3:
                     CompteController.addSold();
                     break;
-
                 case 4:
                     CompteController.virement();
                     break;
@@ -57,12 +55,12 @@ public class Main {
                     break;
                 case 8:
                     CompteController.afficherOperationOfAccount();
-                     break;
+                    break;
                 case 0:
-                    System.out.println("Thank you for using our service");
+                    System.out.println("Merci d'avoir utilisé notre service.");
                     break;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("Option invalide.");
             }
         }
     }
